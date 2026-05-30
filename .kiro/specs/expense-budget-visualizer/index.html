@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- ══ APP TITLE ══ -->
+    <div class="app-title-bar">
+      <h1 class="app-title">Expense &amp; Budget Visualizer</h1>
+      <button class="btn-theme" id="btnTheme" title="Toggle dark mode">🌙</button>
+    </div>
+
+    <!-- ══ TOTAL BALANCE ══ -->
+    <div class="card balance-card">
+      <p class="balance-label">TOTAL BALANCE</p>
+      <p class="balance-amount" id="balanceAmt">$0.00</p>
+    </div>
+
+    <!-- Over-limit banner -->
+    <div class="over-limit-banner" id="overBanner" style="display:none">
+      <span id="overBannerMsg"></span>
+    </div>
+
+    <!-- ══ ADD TRANSACTION ══ -->
+    <div class="card form-card">
+      <h2 class="card-heading">Add Transaction</h2>
+      <form id="txForm" novalidate>
+
+        <div class="field-group">
+          <label class="field-label" for="inputName">Item Name</label>
+          <input  class="field-input" id="inputName" type="text"
+                  placeholder="e.g. Cilok" autocomplete="off" />
+          <span  class="field-error" id="errName"></span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="inputAmt">Amount</label>
+          <input  class="field-input" id="inputAmt" type="number"
+                  placeholder="14.94" min="0.01" step="any" />
+          <span  class="field-error" id="errAmt"></span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="inputCat">Category</label>
+          <select class="field-input" id="inputCat">
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Fun">Fun</option>
+          </select>
+          <span class="field-error" id="errCat"></span>
+
+          <!-- Custom category row — shown when "+ Add custom" is picked -->
+          <div class="custom-cat-row" id="customCatRow">
+            <input class="field-input" id="customCatName"
+                   type="text" placeholder="New category name…" />
+            <button type="button" class="btn-add-cat" id="btnAddCat">Add</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Add Transaction</button>
+
+      </form>
+    </div>
+
+    <!-- ══ SPENDING LIMIT (optional challenge) ══ -->
+    <div class="card limit-card">
+      <h2 class="card-heading">⚠️ Spending Limit</h2>
+      <div class="limit-row">
+        <input class="field-input" id="inputLimit"
+               type="number" placeholder="Set budget limit…" min="0" step="any" />
+        <button class="btn-set-limit" id="btnSetLimit">Set</button>
+      </div>
+      <p class="limit-info" id="limitInfo">No limit set.</p>
+    </div>
+
+    <!-- ══ BOTTOM TWO-COLUMN ══ -->
+    <div class="two-col">
+
+      <!-- LEFT: Transactions -->
+      <div class="card tx-card">
+        <h2 class="card-heading">Transactions</h2>
+
+        <!-- Sort bar (optional challenge) -->
+        <div class="sort-row">
+          <label class="sort-label" for="sortSel">Sort:</label>
+          <select class="sort-select" id="sortSel">
+            <option value="date-desc">Latest</option>
+            <option value="amount-desc">Amount ↓</option>
+            <option value="amount-asc">Amount ↑</option>
+            <option value="cat-az">Category A–Z</option>
+            <option value="cat-za">Category Z–A</option>
+          </select>
+        </div>
+
+        <!-- Scrollable list -->
+        <div class="tx-scroll" id="txList">
+          <p class="empty-msg">No transactions yet.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Chart -->
+      <div class="card chart-card">
+        <h2 class="card-heading">Spending by Category</h2>
+        <div class="chart-area" id="chartArea">
+          <canvas id="pieCanvas"></canvas>
+        </div>
+        <div class="chart-legend" id="chartLegend"></div>
+      </div>
+
+    </div><!-- /two-col -->
+
+    <!-- ══ MONTHLY SUMMARY (optional challenge) ══ -->
+    <div class="card monthly-card">
+      <h2 class="card-heading">📅 Monthly Summary</h2>
+      <div class="month-tabs"    id="monthTabs"></div>
+      <div class="month-content" id="monthContent">
+        <p class="empty-msg">No data yet.</p>
+      </div>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
